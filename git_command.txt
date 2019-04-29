@@ -1,0 +1,31 @@
+git init//将一个目录变成git仓库
+
+回退
+git log//历史commit
+git reflog//历史提交到远程仓库，可以获得相应版本号
+git reset --hard 版本号//可以将本地仓库回退到指定版本号，其中HEAD^是回退到上一个版本，HEAD是Git内部指向当前版本的指针，
+git checkout -- readme.txt//可以放弃该文件还未提交到本地仓库的更改，退回到上一次提交的状态(只有--就是忽略全部)
+
+git status//查看本地仓库与远程仓库的区别，以及是否有修改未提交到本地仓库
+git diff readme.txt//查看本地未提交的文件与远程仓库的区别
+
+git remote add origin https://github.com/tugenhua0707/testgit.git
+
+git add -A//提交所有变化
+git commit -m "this is a commit"//本次提交的注释
+git push origin master//将本地的commit提交到远程仓库，如果是第一次提交，需要在push后加-u，表示将本地与远程连接起来
+
+git pull//仅将远程的最新版本下载到本地后进行合并
+
+
+origin在clone完成之后，git会自动将远程仓库命名为origin
+master是主分支的意思
+
+git remote add both git@git.coding.net:HaoQChen/HaoQChen.coding.me.git//添加一个名为 both 的远端，这个其实是添加fetch的地址
+git remote set-url --add --push both git@github.com:HaoQChen/HaoQChen.github.io.git//为其添加 push 到 Coding 的 SSH 地址
+git remote set-url --add --push both git@github.com:HaoQChen/HaoQChen.github.io.git//为其添加 push 到 GitHub 的 SSH 地址
+通过git remote -v #查看当前远端仓库
+这样就可以通过git push both同时推送到两个远端仓库了。理论上应该也可以直接对origin增加push地址，
+但是首次需要配置SSH公钥，github和coding都需要同一个公钥，配置方法：https://dev.tencent.com/help/doc/account/ssh-key
+
+

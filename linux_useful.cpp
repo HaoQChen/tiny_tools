@@ -2,17 +2,26 @@
 #include <sys/stat.h>//for mkdir
 mkdir("./calibrate_images/", S_IRWXO  | S_IRWXG  | S_IRWXU );
 
-//get executable program's real path and set it to current path
+/*************get executable program's real path and set it to current path*************/
 #include <unistd.h>//for readlink chdir
-char temp[100];
-int cnt = readlink("/proc/self/exe", temp, 100);
-for(int i = cnt; i > 0; --i){
-    if(temp[i-1] == '/'){
-        temp[i] = '\0';
-        break;
+/**
+ * @Brief: Change current path to path of exe file
+ * @Param: 
+ * @Return: string - current path
+ */
+static auto setCurrentPath = []()
+{
+    char temp[100];
+    int cnt = readlink("/proc/self/exe", temp, 100);
+    for(int i = cnt; i > 0; --i){
+        if(temp[i-1] == '/'){
+            temp[i] = '\0';
+            break;
+        }
     }
-}
-chdir(temp);
+    chdir(temp);
+    return std::string(temp);
+}();
 
 /*******************get current time, not thread savely************************/
 #include <time.h>//for localtime_r tm time_t timespec
@@ -25,6 +34,15 @@ localtime_r(&time.tv_sec, &nowtime);//translate to local time
 
 sprintf(temp,"%d%d%d%d%d%d.bmp", nowtime.tm_year+1900, nowtime.tm_mon+1, nowtime.tm_mday, nowtime.tm_hour, nowtime.tm_min, nowtime.tm_sec);
 
+/***********************count time consume by process**************************/
+#include <time.h>//for clock
+clock_t time_begin = clock();
+
+clock_t time_end = clock();
+
+double time_in_s = (double)(time_end - time_begin)/CLOCKS_PER_SEC;
+
+cout << "time only cost by process" << time_in_s;
 
 /************************get files' name in the folder**********************************/
 #include <dirent.h>//for dirent
